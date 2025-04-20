@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body style="height: 100vh; background-image: url(Bg.webp); background-repeat: no-repeat; background-size: cover;">
+
+
+    <div class="container text-center my-3 my-lg-2 position-relative">
+        <h1 class="text-center fw-bolder text-white">Rock-Paper-Scissor</h1>
+        <button id="musicBtn" class="btn btn-primary position-absolute end-0 top-0">
+            <span class="badge" id="badge"><i class="fa-solid fa-volume-xmark"></i></span>
+        </button>
+
+        <!-- Audio Element -->
+        <audio id="bgMusic" loop autoplay>
+            <source src="Game-Music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+
+        <div class="card glass-card mx-auto my-2 col-lg-6">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="rock.jpg" onclick="playerChoice('Rock')" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="paper.jpg" onclick="playerChoice('Paper')" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="scissor.jpg" onclick="playerChoice('Scissor')" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card glass-card position-relative mx-auto my-2 col-lg-6">
+            <h4 class="text-center fw-bold text-white mt-3">Result</h4>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4 mx-auto position-absolute top-0 start-0">
+                        <div class="card border-0">
+                            <div class="card-body ">
+                                <img src="Computer win.webp" class="img-fluid">
+                            </div>
+                            <div class="card-footer">
+                                <h6 class="text-center" id="computerDec">???</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mx-auto position-absolute top-0 end-0">
+                        <div class="card border-0 ">
+                            <div class="card-body">
+                                <img src="Player win.webp" class="img-fluid">
+                            </div>
+                            <div class="card-footer">
+                                <h6 class="text-center" id="playerDec">???</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 mx-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="question.png" id="result-img" class="img-fluid">
+                            </div>
+                            <div class="card-footer">
+                                <h6 class="text-center fw-bold text-wrap" id="result">??????</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card glass-card mx-auto my-2 col-lg-6">
+            <div class="card-body">
+                <div class="row">
+                    <div class="card p-1 mx-auto col-3 col-md-2">
+                        <div class="card-body">
+                            <img src="Computer.png" class="img-fluid">
+                        </div>
+                        <div class="card-footer bg-secondary-subtle">
+                            <h6 class="fw-bold text-center" id="computerWinC">0</h6>
+                        </div>
+                    </div>
+                    <div class="card p-1 mx-auto col-3 col-md-2">
+                        <div class="card-body">
+                            <img src="Human.png" class="img-fluid">
+                        </div>
+                        <div class="card-footer bg-secondary-subtle">
+                            <h6 class="fw-bold text-center" id="playerWinC">0</h6>
+                        </div>
+                    </div>
+                    <div class="card p-1 mx-auto col-3 col-md-2">
+                        <div class="card-body">
+                            <img src="Game.png" class="img-fluid">
+                        </div>
+                        <div class="card-footer bg-secondary-subtle">
+                            <h6 class="fw-bold text-center" id="gameC">0</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Game Logics
+        const computerDec = document.getElementById("computerDec");
+        const playerDec = document.getElementById("playerDec");
+
+        let result = document.getElementById("result");
+        let resultImg = document.getElementById("result-img");
+
+        let playerWinC = document.getElementById("playerWinC");
+        let computerWinC = document.getElementById("computerWinC");
+        let gameC = document.getElementById("gameC");
+
+        let playerScore = 0;
+        let computerScore = 0;
+        let totalGame = 0;
+
+        const playerChoice = (PD) => {
+            playerDec.textContent = PD; // Set player decision
+            let CD = computerChoice(); // Get computer decision
+            gameplay(PD, CD); // Determine winner
+        };
+
+        const computerChoice = () => {
+            let CDN = Math.floor(Math.random() * 3 + 1);
+            let CD = CDN === 1 ? "Rock" : CDN === 2 ? "Paper" : "Scissor";
+            computerDec.textContent = CD;
+            return CD; // Return computer choice
+        };
+
+        const gameplay = (playerDecision, computerDecision) => {
+            if (playerDecision === computerDecision) {
+                result.textContent = "Match Tie!";
+                resultImg.src = "Match Tie.png";
+
+            } else if (
+                (playerDecision === "Rock" && computerDecision === "Scissor") ||
+                (playerDecision === "Paper" && computerDecision === "Rock") ||
+                (playerDecision === "Scissor" && computerDecision === "Paper")
+            ) {
+                playerScore++;
+                playerWinC.textContent = playerScore;
+                result.textContent = "Player Wins!";
+                resultImg.src = "Player win.webp";
+            } else {
+                computerScore++;
+                computerWinC.textContent = computerScore;
+                result.textContent = "Computer Wins!";
+                resultImg.src = "Computer win.webp";
+
+            }
+            gameCount();
+        };
+
+        const gameCount = () => {
+            totalGame++;
+            gameC.textContent = totalGame;
+        };
+
+
+        // music logic
+
+        const bgMusic = document.getElementById("bgMusic");
+        const musicBtn = document.getElementById("musicBtn");
+        const badge = document.getElementById("badge");
+
+        let isPlaying = false;
+
+        musicBtn.addEventListener("click", () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                badge.innerHTML = "<i class='fa-solid fa-volume-xmark'></i>" // Change to play icon
+            } else {
+                bgMusic.play();
+                badge.innerHTML = "<i class='fa-solid fa-volume-high'></i>"; // Change to pause icon
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Auto-play music when the page loads
+        window.onload = () => {
+            bgMusic.play().catch(error => console.log("Autoplay blocked by browser:", error));
+        };
+
+
+    </script>
+
+</body>
+
+</html>
